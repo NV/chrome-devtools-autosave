@@ -4,7 +4,7 @@ Chrome DevTools let you edit CSS and JavaScript. It even allows you to [save it]
 
 ## How Does It Work?
 
-Chrome 16+ (dev channel) has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+Chrome 15+ ([beta](http://www.google.com/landing/chrome/beta/)) has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
     chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
         event.url
@@ -29,7 +29,7 @@ Chrome DevTools Autosave consists of a Chrome extension and a server. The extens
 
 ### Install the Extension
 
-Launch Chrome 16+  
+Launch Chrome 15+  
 Open chrome://flags/ and enable Experimental Extension APIs  
 Restart the browser  
 Open chrome://extensions/  

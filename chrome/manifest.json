@@ -12,5 +12,5 @@
         "http://*/"
     ],
 
-    "minimum_chrome_version": "16"
+    "minimum_chrome_version": "15"
 }
