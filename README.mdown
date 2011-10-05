@@ -4,7 +4,7 @@ Chrome DevTools let you edit CSS and JavaScript. It even allow you to [save it](
 
 ## How Does It Work?
 
-Chrome 16+ has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+Chrome 16+ (dev channel) has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
     chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
         event.url
@@ -29,7 +29,7 @@ Chrome DevTools Autosave consists of a Chrome extension and a server. The extens
 
 Launch Chrome 16+  
 Open chrome://flags/ and enable Experimental Extension APIs  
-Restart the browser
+Restart the browser  
 Open chrome://extensions/  
 Check "Developer mode"  
 Press "Load unpacked extension..."  
@@ -59,6 +59,6 @@ Edit some CSS and JS.
 That's it. Files have been saved.
 
 
-## Similar Staff
+## Similar Stuff
 
 [CSS-X-Fire](http://code.google.com/p/css-x-fire/) is a similar tool for Firebug and [IntelliJ IDEA](http://www.jetbrains.com/idea/)
