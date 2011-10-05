@@ -64,3 +64,9 @@ That's it. Files have been saved.
 ## Similar Stuff
 
 [CSS-X-Fire](http://code.google.com/p/css-x-fire/) is a similar tool for Firebug and [IntelliJ IDEA](http://www.jetbrains.com/idea/)
+
+## How to Contribute
+
+  * Write a server for a framework of your choice
+  * [Open issues](https://github.com/NV/chrome-devtools-autosave/issues?state=open)
+  * Fix README. Found typos? Something sounds weird? Let me know!
