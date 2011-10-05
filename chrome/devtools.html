@@ -1,0 +1,34 @@
+<script>
+/**
+ * @see http://groups.google.com/a/chromium.org/group/chromium-extensions/browse_thread/thread/2250b06906a69260
+ */
+var id;
+function updateId() {
+    id = Date.now().toString();
+}
+updateId();
+
+chrome.experimental.devtools.onReset.addListener(updateId);
+
+
+chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+
+    chrome.extension.sendRequest({message: 'Hi', url: event.url, type: event.type}, function(url) {
+        if (!url) {
+            console.error(event.url + ' does not correspond to any backend.');
+            return;
+        }
+        event.getContent(function(content) {
+            chrome.extension.sendRequest({
+                message: 'Send',
+                content: content,
+                url: url,
+                'X-URL': event.url,
+                'X-Type': event.type,
+                'X-ID': id
+            });
+        });
+    });
+
+});
+</script>

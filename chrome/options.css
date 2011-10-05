@@ -1,0 +1,95 @@
+body {
+    background: #eaeef3;
+    font: 13px Helvetica, sans-serif;
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h3 {
+    font-size: 14px;
+    width: 80px;
+    text-align: right;
+    margin: 0;
+    padding: .3em 1em 0 0;
+}
+
+input {
+    font-family: inherit;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input[type=checkbox] {
+    margin-right: .5em;
+}
+
+label {
+    margin-right: 1em;
+}
+
+fieldset {
+    border: none;
+}
+
+#rules {
+    margin-top: 16px;
+}
+
+.rule {
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 10px;
+    margin: 0;
+    opacity: 1;
+    -webkit-transition: height .1s ease-in-out, opacity .1s linear;
+}
+
+.rule-delete {
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    background-color: hsl(210, 30%, 92%);
+}
+
+.rule-hidden {
+    height: 0 !important;
+    opacity: 0;
+}
+
+.row {
+    display:-webkit-box;
+    margin: .5em 0;
+}
+.row p {
+    -webkit-box-flex: 1;
+    margin: 0;
+    padding: 0;
+}
+.row-checkboxes {
+    padding-left: 92px;
+}
+
+.input-text {
+    width: 99%;
+    font-size: inherit;
+}
+
+
+#add_row {
+    margin-top: 6px;
+    padding: 3px 10px;
+}
+
+#dummy_rule {
+    position: absolute;
+    top: -99999px;
+}
+
+.right-side {
+    display: block;
+    -webkit-box-flex: 1;
+    text-align: right;
+}

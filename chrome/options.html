@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="options.css"/>
+    <script src="options.js"></script>
+</head>
+<body>
+    <form id=rules></form>
+    <button id=add_row class=button>Add rule</button>
+    <fieldset class=rule id=dummy_rule>
+        <div class=row>
+            <h3>Resource</h3>
+            <p>
+                <input name=match class="input-text" placeholder="^file://">
+            </p>
+        </div>
+        <div class=row>
+            <h3>Post to</h3>
+            <p>
+                <input name=to type=url class="input-text" placeholder="http://127.0.0.1:9104/save">
+            </p>
+        </div>
+        <div class="row row-checkboxes">
+            <label><input name=stylesheet type=checkbox checked>CSS</label>
+            <label><input name=script type=checkbox checked>JS</label>
+            <label><input name=document type=checkbox>adding CSS rules</label>
+            <span class="right-side"><button class=delete onclick="deleteRule(this); return false;">delete</button></span>
+        </div>
+    </fieldset>
+</body>
+</html>

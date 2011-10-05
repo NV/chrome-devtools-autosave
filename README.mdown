@@ -1,0 +1,64 @@
+# Chrome DevTools Autosave
+
+Chrome DevTools let you edit CSS and JavaScript. It even allow you to [save it](http://youtu.be/N8SS-rUEZPg?t=7m13s). You know it, right? I think, it's annoying to "Save as..." every time you want to save. Chrome DevTools Autosave saves files after every change for you!
+
+## How Does It Work?
+
+Chrome 16+ has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+
+    chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+        event.url
+        event.type // 'script', 'stylesheet' or 'document' (happens when you add new CSS rule)
+        event.getContent(function(content) {
+            content // all the content of updated file as a string
+        })
+    })
+
+Nice, isn't it?
+
+Chrome DevTools Autosave sends the new content of the edited file to the server using `PUT` method. There are couple custom headers: `X-URL` and `X-Type` (I hope they are pretty much self-explanatory).
+
+On the server I can find a file location by URL. I've made [a simple server using Node.js](/NV/chrome-devtools-autosave-server) that works only for `file://` scheme. It's ≈20LOC. You could write your own for your favorite web framework (Rails, Django, Express...). Go ahead!
+
+
+## How to Install
+
+Chrome DevTools Autosave consists of a Chrome extension and a server. The extension pushes changed files to the server. The server resolves URL of these files and overwrites the old ones with the new ones.
+
+### Install the Extension
+
+Launch Chrome 16+  
+Open chrome://flags/ and enable Experimental Extension APIs  
+Restart the browser
+Open chrome://extensions/  
+Check "Developer mode"  
+Press "Load unpacked extension..."  
+
+    git clone https://github.com/NV/chrome-devtools-autosave.git
+
+Choose "chrome-devtools-autosave/chrome" directory
+
+### Install the Server
+
+    git clone https://github.com/NV/chrome-devtools-autosave-server.git
+    node chrome-devtools-autosave-server/index.js
+
+### Configure Server Address
+
+Open chrome://extensions/  
+Open DevTools Autosave's options.  
+Change "Post to" URL if needed.
+
+
+## How to Use
+
+    node chrome-devtools-autosave-server/index.js
+
+Open example/index.html locally (using file:// scheme).  
+Edit some CSS and JS.  
+That's it. Files have been saved.
+
+
+## Similar Staff
+
+[CSS-X-Fire](http://code.google.com/p/css-x-fire/) is a similar tool for Firebug and [IntelliJ IDEA](http://www.jetbrains.com/idea/)

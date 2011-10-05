@@ -1,0 +1,48 @@
+<script>
+/**
+ * @nosideeffects
+ * @return Array
+ */
+function getRoutes() {
+    var json = localStorage.routes;
+    if (!json) {
+        return [];
+    }
+
+    var routes = JSON.parse(json);
+    for (var i = 0; i < routes.length; i++) {
+        routes[i].match = new RegExp(routes[i].match);
+    }
+    return routes;
+}
+
+/**
+ * @param {Object} request
+ * @nosideeffects
+ * @return string
+ */
+function getBackend(request) {
+    var routes = getRoutes();
+    for (var i = 0; i < routes.length; i++) {
+        var route = routes[i];
+        if (route.match.test(request.url) && route[request.type]) {
+            return route.to;
+        }
+    }
+    return '';
+}
+
+
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    if (request.message == 'Hi') {
+        sendResponse(getBackend(request));
+    } else if (request.message == 'Send') {
+        var xhr = new XMLHttpRequest();
+        xhr.open('put', request.url);
+        xhr.setRequestHeader('X-Type', request['X-Type']);
+        xhr.setRequestHeader('X-URL', request['X-URL']);
+        xhr.setRequestHeader('X-ID', request['X-ID']);
+        xhr.send(request.content);
+    }
+});
+</script>

@@ -1,0 +1,16 @@
+{
+    "name": "DevTools autosave",
+    "version": "1.0",
+    "description": "Pushes to the server edited CSS and JS",
+
+    "devtools_page": "devtools.html",
+    "background_page": "background.html",
+    "options_page": "options.html",
+
+    "permissions": [
+        "experimental",
+        "http://*/"
+    ],
+
+    "update_url": "http://clients2.google.com/service/update2/crx"
+}
