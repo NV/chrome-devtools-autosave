@@ -7,8 +7,8 @@ body {
 
 h1 {
     background: #000;
-    max-width: 300px;
-    padding: .6em;
+    padding: .6em 1em;
+    font-size: 200%;
     line-height: 1.5em;
     color: #FFF;
 
