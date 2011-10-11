@@ -25,9 +25,11 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
                 method: 'send',
                 content: content,
                 url: url,
-                'X-URL': event.url,
-                'X-Type': event.type,
-                'X-ID': id
+                headers: {
+                    'X-URL': event.url,
+                    'X-Type': event.type,
+                    'X-ID': id
+                }
             });
         });
     });

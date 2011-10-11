@@ -41,9 +41,12 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     } else if (request.method == 'send') {
         var xhr = new XMLHttpRequest();
         xhr.open('put', request.url);
-        xhr.setRequestHeader('X-Type', request['X-Type']);
-        xhr.setRequestHeader('X-URL', request['X-URL']);
-        xhr.setRequestHeader('X-ID', request['X-ID']);
+
+        var headers = request.headers;
+        for (var key in headers) {
+            xhr.setRequestHeader(key, headers[key]);
+        }
+
         xhr.send(request.content);
     }
 });
