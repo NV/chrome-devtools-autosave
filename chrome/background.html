@@ -27,8 +27,13 @@ function getBackend(request) {
     var routes = getRoutes();
     for (var i = 0; i < routes.length; i++) {
         var route = routes[i];
-        if (route.match.test(request.url) && route[request.type]) {
-            return route.to;
+        var matched;
+        if (route[request.type] && (matched = request.url.match(route.match))) {
+            var result = route.to;
+            for (var j = 0; j < matched.length; j++) {
+                result = result.replace(new RegExp('\\$' + j, 'g'), matched[j]);
+            }
+            return result;
         }
     }
     return '';
