@@ -34,8 +34,12 @@ function getBackend(request) {
     return '';
 }
 
-
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+/**
+ * @param {Object} request
+ * @param {MessageSender} sender
+ * @param {Function} sendResponse
+ */
+function onRequest(request, sender, sendResponse) {
     if (request.method == 'getBackend') {
         sendResponse(getBackend(request));
     } else if (request.method == 'send') {
@@ -49,5 +53,9 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
         xhr.send(request.content);
     }
-});
+}
+
+
+chrome.extension.onRequest.addListener(onRequest);
+chrome.extension.onRequestExternal.addListener(onRequest);
 </script>
