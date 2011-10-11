@@ -40,7 +40,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         sendResponse(getBackend(request));
     } else if (request.method == 'send') {
         var xhr = new XMLHttpRequest();
-        xhr.open('put', request.url);
+        xhr.open('POST', request.url);
 
         var headers = request.headers;
         for (var key in headers) {
