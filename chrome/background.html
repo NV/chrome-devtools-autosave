@@ -34,9 +34,9 @@ function getBackend(request) {
 
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    if (request.message == 'Hi') {
+    if (request.method == 'getBackend') {
         sendResponse(getBackend(request));
-    } else if (request.message == 'Send') {
+    } else if (request.method == 'send') {
         var xhr = new XMLHttpRequest();
         xhr.open('put', request.url);
         xhr.setRequestHeader('X-Type', request['X-Type']);

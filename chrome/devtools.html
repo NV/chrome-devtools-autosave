@@ -13,14 +13,14 @@ chrome.experimental.devtools.onReset.addListener(updateId);
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
 
-    chrome.extension.sendRequest({message: 'Hi', url: event.url, type: event.type}, function(url) {
+    chrome.extension.sendRequest({method: 'getBackend', url: event.url, type: event.type}, function(url) {
         if (!url) {
             console.error(event.url + ' does not correspond to any backend.');
             return;
         }
         event.getContent(function(content) {
             chrome.extension.sendRequest({
-                message: 'Send',
+                method: 'send',
                 content: content,
                 url: url,
                 'X-URL': event.url,
