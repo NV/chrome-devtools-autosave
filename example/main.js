@@ -1,3 +1,5 @@
+'use strict';
+
 window.addEventListener('load', function(event) {
 
     document.body.className += ' loaded';
