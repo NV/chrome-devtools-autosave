@@ -2,7 +2,7 @@
 
 var rules = [];
 
-const defaultRules = [
+var defaultRules = [
     {
         match: '^file://',
         to: 'http://127.0.0.1:9104/save',
