@@ -46,6 +46,8 @@ fieldset {
     padding: 0 10px;
     margin: 0;
     opacity: 1;
+}
+.rule-animation {
     -webkit-transition: height .1s ease-in-out, opacity .1s linear;
 }
 
@@ -59,9 +61,22 @@ fieldset {
     opacity: 0;
 }
 
+.error {
+    display: none;
+}
+
 .row {
     display:-webkit-box;
     margin: .5em 0;
+    padding-right: 10px;
+}
+.row-error {
+    background-color: #FDD;
+    outline: 5px solid #FDD;
+    color: #900;
+}
+.row-error .error {
+    display: block;
 }
 .row p {
     -webkit-box-flex: 1;
