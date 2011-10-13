@@ -1,14 +1,14 @@
 'use strict';
 
 /**
- * @param {string} className
+ * @param {string} selector
  * @nosideeffects
  * @return {Element|null}
  */
 HTMLElement.prototype.up = function(selector) {
     var element = this;
-    while (element = element.parentNode) {
-        if ('webkitMatchesSelector' in element && element.webkitMatchesSelector(selector)) {
+    while (element = element.parentElement) {
+        if (element.webkitMatchesSelector(selector)) {
             return element;
         }
     }
