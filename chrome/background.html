@@ -50,13 +50,19 @@ function onRequest(request, sender, sendResponse) {
         sendResponse(getBackend(request));
     } else if (request.method == 'send') {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', request.url);
+        xhr.open('POST', request.url, true);
 
         var headers = request.headers;
         for (var key in headers) {
             xhr.setRequestHeader(key, headers[key]);
         }
-
+        xhr.onreadystatechange = function(event) {
+            if (xhr.readyState == 4) {
+                if (xhr.status >= 300) {
+                    webkitNotifications.createNotification('', '', xhr.responseText).show();
+                }
+            }
+        };
         xhr.send(request.content);
     }
 }
