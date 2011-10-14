@@ -2,12 +2,14 @@
 
 <html>
 <head>
+    <title>DevTools autosave</title>
     <link rel="stylesheet" href="options.css"/>
     <script src="options.js"></script>
 </head>
 <body>
+    <h1>DevTools Autosave</h1>
     <form id=rules></form>
-    <button id=add_row class=button>Add rule</button>
+    <div class=center><button id=add_row class=button>Add rule</button></div>
     <fieldset class=rule id=dummy_rule>
         <div class=row>
             <h3>Resource</h3>
@@ -26,7 +28,10 @@
             <label><input name=stylesheet type=checkbox checked>CSS</label>
             <label><input name=script type=checkbox checked>JS</label>
             <label><input name=document type=checkbox>adding CSS rules</label>
-            <span class="right-side"><button class=delete onclick="deleteRule(this); return false;">delete</button></span>
+            <span class="right-side">
+                <button class=toggle onclick="_onToggleRule(this); return false;">Disable</button>
+                <button class=delete onclick="_onDeleteRule(this); return false;">Delete</button>
+            </span>
         </div>
     </fieldset>
 </body>

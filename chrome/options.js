@@ -38,27 +38,56 @@ function saveRoutes() {
     localStorage.routes = JSON.stringify(serializeForm(document.getElementById('rules')));
 }
 
+/**
+ * @param {HTMLElement} button
+ */
+function _onDeleteRule(button) {
+    deleteRule(button.up('.rule'));
+}
 
 /**
- * @param {Element} button
+ * @param {HTMLElement} rule
  */
-function deleteRule(button) {
-    var rule = button.up('.rule');
+function deleteRule(rule) {
     rule.style.height = rule.clientHeight + 'px';
     rules.splice(getRuleIndex(rule), 1);
     setTimeout(function() {
         rule.classList.add('rule-animation');
         rule.classList.add('rule-hidden');
-        setTimeout(function() {
-            rule.parentNode.removeChild(rule);
-            saveRoutes();
-        }, 200);
+        rule.addEventListener('webkitTransitionEnd', function transitionEnded(event) {
+            if (event.propertyName == 'height') {
+                rule.parentNode.removeChild(rule);
+                saveRoutes();
+            }
+        }, false);
     }, 0);
+}
+
+/**
+ * @param {HTMLButtonElement} button
+ */
+function _onToggleRule(button) {
+    toggleRule(button);
+    saveRoutes();
+}
+
+/**
+ *
+ * @param {HTMLButtonElement} button
+ */
+function toggleRule(button) {
+    var rule = button.up('.rule');
+    var disabled = rule.classList.toggle('rule-disabled');
+    button.textContent = disabled ? 'Enable' : 'Disable';
+    var inputs = rule.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i][disabled ? 'setAttribute' : 'removeAttribute']('disabled');
+    }
 }
 
 
 /**
- * @param {HTMLFieldSetElement} rule
+ * @param {HTMLElement} rule
  * @return {number} index
  */
 function getRuleIndex(rule) {
@@ -89,15 +118,18 @@ function serializeForm(form) {
                 continue;
             }
             if (!rules[j]) {
-                rules[j] = {};
+                var rule = rules[j] = {};
+                if (element.up('.rule').classList.contains('rule-disabled')) {
+                    rule._disabled = true;
+                }
             }
             var value;
-            if (element.disabled || element.type == 'checkbox' && !element.checked) {
+            if (element.type == 'checkbox' && !element.checked) {
                 value = '';
             } else {
                 value = element.value;
             }
-            rules[j][element.name] = value;
+            rule[element.name] = value;
         }
     }
     return rules;
@@ -108,27 +140,31 @@ window.onload = function() {
 
     var dummy = document.getElementById('dummy_rule');
     var RULE_HEIGHT = dummy.clientHeight;
-
-    function cloneDummy() {
-        var clone = dummy.cloneNode(true);
-        clone.removeAttribute('id');
-        return clone;
-    }
+    var dummyClone = dummy.cloneNode(true);
+    dummyClone.removeAttribute('id');
+    dummy.parentNode.removeChild(dummy);
 
     /**
      * @param {Array} rules
      */
     function showRules(rules) {
-        var dummyClone = cloneDummy();
         var rulesElem = document.getElementById('rules');
         rules.forEach(function(rule) {
             if (!rule.match || !rule.to) {
                 return;
             }
             var clone = dummyClone.cloneNode(true);
+            if (rule._disabled) {
+                toggleRule(clone.querySelector('.toggle'));
+            }
             Object.keys(rule).forEach(function(name) {
+                if (name.charAt(0) == '_') {
+                    return;
+                }
                 var input = clone.querySelector('[name="' + name + '"]');
-                if (input.type == 'checkbox') {
+                if (input.tagName == 'button') {
+                    input.textContent = rule[name];
+                } else if (input.type == 'checkbox') {
                     input.checked = !!rule[name];
                 } else {
                     input.value = rule[name];
@@ -162,30 +198,21 @@ window.onload = function() {
         saveRoutes();
     };
 
-    rules.onmouseover = function(event) {
-        if (event.target.classList.contains('delete')) {
-            event.target.up('.rule').classList.add('rule-delete');
-        }
-    };
-
-    rules.onmouseout = function(event) {
-        if (event.target.classList.contains('delete')) {
-            event.target.up('.rule').classList.remove('rule-delete');
-        }
-    };
-
     document.getElementById('add_row').onclick = function() {
-        var clone = cloneDummy();
+        var clone = dummyClone.cloneNode(true);
         clone.classList.add('rule-hidden');
         clone.classList.add('rule-animation');
         rules.appendChild(clone);
         setTimeout(function() {
             clone.style.height = RULE_HEIGHT + 'px';
             clone.classList.remove('rule-hidden');
-            setTimeout(function() {
-                clone.removeAttribute('style');
-                clone.classList.remove('rule-animation');
-            }, 200);
+            clone.addEventListener('webkitTransitionEnd', function transitionEnded(event) {
+                if (event.propertyName == 'height') {
+                    clone.removeAttribute('style');
+                    clone.classList.remove('rule-animation');
+                    clone.removeEventListener('webkitTransitionEnd', transitionEnded, false);
+                }
+            }, false);
         }, 0);
         saveRoutes();
     };

@@ -1,9 +1,18 @@
 body {
     background: #eaeef3;
     font: 13px Helvetica, sans-serif;
-    width: 95%;
-    max-width: 800px;
-    margin: 0 auto;
+    min-width: 540px;
+    margin: 0;
+}
+
+h1 {
+    color: #53637d;
+    font-size: 140%;
+    font-weight: normal;
+    margin: 0;
+    padding: 13px 0 14px;
+    text-align: center;
+    text-shadow: white 0 1px 1px;
 }
 
 h3 {
@@ -35,30 +44,35 @@ fieldset {
     border: none;
 }
 
+.center {
+    padding-left: 4%;
+    margin: 0 auto;
+}
+
 #rules {
-    margin-top: 16px;
+    border-top: 1px solid #D5DDE7;
+    border-bottom: 1px solid #FFF;
 }
 
 .rule {
     box-sizing: border-box;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 0 10px;
-    margin: 0;
+    padding: 0 3%;
+    margin: 0 auto;
     opacity: 1;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #D5DDE7;
 }
 .rule-animation {
-    -webkit-transition: height .1s ease-in-out, opacity .1s linear;
+    -webkit-transition: height .1s ease-out, opacity .1s linear;
 }
-
-.rule-delete {
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.1);
-    background-color: hsl(210, 30%, 92%);
-}
-
 .rule-hidden {
     height: 0 !important;
     opacity: 0;
+}
+.rule-disabled {
+    color: #8F98A3;
 }
 
 .error {
@@ -99,12 +113,13 @@ fieldset {
 }
 
 #dummy_rule {
-    position: absolute;
-    top: -99999px;
+    position: relative;
+    top: -999px;
 }
 
 .right-side {
     display: block;
     -webkit-box-flex: 1;
     text-align: right;
+    margin-top: -3px;
 }

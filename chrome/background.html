@@ -11,11 +11,12 @@ function getRoutes() {
         return [];
     }
 
-    var routes = JSON.parse(json);
-    for (var i = 0; i < routes.length; i++) {
-        routes[i].match = new RegExp(routes[i].match);
-    }
-    return routes;
+    return JSON.parse(json).filter(function(route) {
+        return !route._disabled;
+    }).map(function(route) {
+        route.match = new RegExp(route.match);
+        return route;
+    });
 }
 
 /**
