@@ -87,7 +87,7 @@ function toggleRule(button) {
 
 
 /**
- * @param {HTMLElement} rule
+ * @param {HTMLFieldSetElement} rule
  * @return {number} index
  */
 function getRuleIndex(rule) {
