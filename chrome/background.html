@@ -1,6 +1,22 @@
 <script>
 'use strict';
 
+var defaultRules = [
+    {
+        match: '^file://',
+        to: 'http://127.0.0.1:9104/save',
+        script: 'on',
+        stylesheet: 'on',
+        document: ''
+    }
+];
+
+if (!localStorage.routes) {
+    // First run
+    localStorage.routes = JSON.stringify(defaultRules);
+}
+
+
 /**
  * @nosideeffects
  * @return Array

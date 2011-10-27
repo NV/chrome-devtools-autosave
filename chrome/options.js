@@ -18,21 +18,6 @@ HTMLElement.prototype.up = function(selector) {
 
 var rules = [];
 
-var defaultRules = [
-    {
-        match: '^file://',
-        to: 'http://127.0.0.1:9104/save',
-        script: 'on',
-        stylesheet: 'on',
-        document: ''
-    }
-];
-
-if (!localStorage.routes) {
-    // First run
-    localStorage.routes = JSON.stringify(defaultRules);
-}
-
 
 function saveRoutes() {
     localStorage.routes = JSON.stringify(serializeForm(document.getElementById('rules')));
