@@ -6,7 +6,7 @@ Chrome DevTools let you edit CSS and JavaScript. It even allows you to [save it]
 
 ## How Does It Work?
 
-Chrome 15+ ([beta](http://www.google.com/landing/chrome/beta/)) has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+Chrome 15+ has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
     chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
         event.url
