@@ -31,28 +31,14 @@ Chrome DevTools Autosave consists of a Chrome extension and a server. The extens
 
 ### Install the Extension
 
-Launch Chrome 15+  
 Open chrome://flags/ and enable Experimental Extension APIs  
 Restart the browser  
-Open chrome://extensions/  
-Check "Developer mode"  
-Press "Load unpacked extension..."  
-
-    git clone https://github.com/NV/chrome-devtools-autosave.git
-
-Choose "chrome-devtools-autosave/chrome" directory
+Install [Chrome DevTools Autosave](http://userscripts.ru/js/chrome-devtools-autosave/latest.crx)
 
 ### Install the Server
 
     git clone https://github.com/NV/chrome-devtools-autosave-server.git
     node chrome-devtools-autosave-server/index.js
-
-### Configure Server Address
-
-Open chrome://extensions/  
-Open DevTools Autosave's options.  
-Change "Post to" URL if needed.
-
 
 ## How to Use
 
@@ -62,6 +48,11 @@ Open example/index.html locally (using file:// scheme).
 Edit some CSS and JS.  
 That's it. Files have been saved.
 
+### Configure Server Address
+
+Open chrome://extensions/  
+Open DevTools Autosave's options.  
+Change "Post to" URL if needed.
 
 ## Similar Stuff
 

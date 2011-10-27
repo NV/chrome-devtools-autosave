@@ -1,7 +1,7 @@
 {
     "name": "DevTools autosave",
     "version": "1.0",
-    "description": "Pushes to the server edited CSS and JS",
+    "description": "Pushes changes in CSS and JS files to the server",
 
     "devtools_page": "devtools.html",
     "background_page": "background.html",
@@ -13,5 +13,6 @@
         "http://*/"
     ],
 
+    "update_url": "http://userscripts.ru/js/chrome-devtools-autosave/update.xml",
     "minimum_chrome_version": "15"
 }
