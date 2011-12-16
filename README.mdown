@@ -1,12 +1,12 @@
 # Chrome DevTools Autosave
 
-**[20 seconds Screencast](http://www.youtube.com/watch?v=M4rme6EUvwQ)**
+**[20 seconds Screencast](http://www.youtube.com/watch?v=M4rme6EUvwQ)** · **[5 minutes intro by Addy Osmani](http://addyosmani.com/blog/autosave-changes-chrome-dev-tools/)**
 
 Chrome DevTools let you edit CSS and JavaScript. It even allows you to [save it](http://youtu.be/N8SS-rUEZPg?t=7m13s). You know it, right? I think, it's annoying to "Save as..." every time you want to save. Chrome DevTools Autosave saves the files after every change for you!
 
 ## How Does It Work?
 
-Chrome 15+ has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+Google Chrome has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
     chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
         event.url
@@ -18,7 +18,7 @@ Chrome 15+ has a [onResourceContentCommitted event](http://code.google.com/chrom
 
 Nice, isn't it?
 
-Chrome DevTools Autosave sends the new content of the edited file to the server using `PUT` method. There are couple custom headers:  
+Chrome DevTools Autosave sends the new content of the edited file to the server using `POST` method. There are couple custom headers:  
 `X-URL`: URL of edited CSS or JavaScript  
 `X-Type`: 'script', 'stylesheet' or 'document' (happens when you add new CSS rule)
 
