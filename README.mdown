@@ -48,7 +48,7 @@ That's it. Files have been saved.
 
 ### FAQ
 
-> I'm developing on `http://localhost/` (or `http://you-name-it/`) instead of `file`. Can I make Autosave work?
+> I'm developing on `http://localhost/` (or `http://you-name-it/`) instead of `file://`. Can I make Autosave work?
 
 [Yes!](https://github.com/NV/chrome-devtools-autosave/issues/7#issuecomment-3182946)
 
