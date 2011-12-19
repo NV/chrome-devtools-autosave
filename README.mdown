@@ -35,24 +35,22 @@ Open chrome://flags/ and enable Experimental Extension APIs
 Restart the browser  
 Install [Chrome DevTools Autosave](http://userscripts.ru/js/chrome-devtools-autosave/latest.crx)
 
-### Install the Server
-
-    git clone https://github.com/NV/chrome-devtools-autosave-server.git
-    node chrome-devtools-autosave-server/index.js
+### [Install the Server](https://github.com/NV/chrome-devtools-autosave-server/blob/master/README.mdown)
 
 ## How to Use
 
-    node chrome-devtools-autosave-server/index.js
+    $ autosave
+    DevTools Autosave is listening on http://127.0.0.1:9104
 
 Open example/index.html locally (using file:// scheme).  
 Edit some CSS and JS.  
 That's it. Files have been saved.
 
-### Configure Server Address
+### FAQ
 
-Open chrome://extensions/  
-Open DevTools Autosave's options.  
-Change "Post to" URL if needed.
+> I'm developing on `http://localhost/` (or `http://you-name-it/`) instead of `file`. Can I make Autosave work?
+
+[Yes!](https://github.com/NV/chrome-devtools-autosave/issues/7#issuecomment-3182946)
 
 ## Similar Stuff
 
