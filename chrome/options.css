@@ -36,8 +36,8 @@ input[type=checkbox] {
     margin-right: .5em;
 }
 
-label {
-    margin-right: 1em;
+label + label {
+    margin-left: 1em;
 }
 
 fieldset {

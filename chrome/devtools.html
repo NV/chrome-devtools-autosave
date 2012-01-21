@@ -1,38 +1,75 @@
 <script>
 'use strict';
 
-/**
- * @see http://groups.google.com/a/chromium.org/group/chromium-extensions/browse_thread/thread/2250b06906a69260
- */
-var id;
-function updateId() {
-    id = Date.now().toString();
-}
-updateId();
-
-chrome.experimental.devtools.onReset.addListener(updateId);
-
+var lastStylesheet = null;
+var addedCSS = '';
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+    var url = '';
+    if (event.type === 'document') {
+        if (lastStylesheet) {
+            url = lastStylesheet.url;
+        } else {
+            console.error('No external stylesheets found');
+            return;
+        }
+    } else {
+        url = event.url;
+    }
 
-    chrome.extension.sendRequest({method: 'getBackend', url: event.url, type: event.type}, function(url) {
-        if (!url) {
-            console.error(event.url + ' does not correspond to any backend.');
+    chrome.extension.sendRequest({method: 'getBackend', url: url, type: event.type}, function(backendURL) {
+        if (!backendURL) {
+            console.error(url + ' does not correspond to any backend.');
             return;
         }
         event.getContent(function(content) {
+
+            if (event.type === 'stylesheet') {
+                if (event.url === lastStylesheet.url) {
+                    lastStylesheet.content = content;
+                }
+            } else if (event.type === 'document') {
+                addedCSS = content + '\n';
+            }
+
             chrome.extension.sendRequest({
                 method: 'send',
-                content: content,
-                url: url,
+                content: (event.type === 'document' ? lastStylesheet.content : content) + addedCSS,
+                url: backendURL,
                 headers: {
-                    'X-URL': event.url,
-                    'X-Type': event.type,
-                    'X-ID': id
+                    'X-URL': url,
+                    'X-Type': event.type
                 }
             });
         });
     });
+});
 
+function updateLastStylesheet() {
+    lastStylesheet = null;
+    chrome.experimental.devtools.inspectedWindow.getResources(function(resources) {
+        var i = resources.length;
+        while (i--) {
+            var resource = resources[i];
+            if (resource.type === 'stylesheet' && resource.url !== 'about:blank') {
+                resource.getContent(function(content) {
+                    lastStylesheet = {
+                        content: content,
+                        url: resource.url
+                    };
+                    console.log('lastStylesheet.url:', resource.url);
+                });
+                break;
+            }
+        }
+    });
+}
+
+updateLastStylesheet();
+
+chrome.experimental.devtools.onReset.addListener(function() {
+    console.log('Reset');
+    addedCSS = '';
+    updateLastStylesheet();
 });
 </script>
