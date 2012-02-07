@@ -47,9 +47,10 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
 
 function updateLastStylesheet() {
     lastStylesheet = null;
-    chrome.devtools.inspectedWindow.eval('var links = document.querySelectorAll("link[rel=stylesheet][href]");\n\
+    chrome.devtools.inspectedWindow.eval('(function() {\n\
+    var links = document.querySelectorAll("link[rel=stylesheet][href]");\n\
     var last = links && links.length && links[links.length - 1];\n\
-    last && last.href', function(href, fail) {
+    return last && last.href})()', function(href, fail) {
         if (fail) return;
         chrome.devtools.inspectedWindow.getResources(function(resources) {
             var i = resources.length;
