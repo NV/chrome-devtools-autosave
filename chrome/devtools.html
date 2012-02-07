@@ -47,21 +47,25 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
 
 function updateLastStylesheet() {
     lastStylesheet = null;
-    chrome.experimental.devtools.inspectedWindow.getResources(function(resources) {
-        var i = resources.length;
-        while (i--) {
-            var resource = resources[i];
-            if (resource.type === 'stylesheet' && resource.url !== 'about:blank') {
-                resource.getContent(function(content) {
-                    lastStylesheet = {
-                        content: content,
-                        url: resource.url
-                    };
-                    console.log('lastStylesheet.url:', resource.url);
-                });
-                break;
+    chrome.devtools.inspectedWindow.eval('var links = document.querySelectorAll("link[rel=stylesheet][href]");\n\
+    var last = links && links.length && links[links.length - 1];\n\
+    last && last.href', function(href, fail) {
+        if (fail) return;
+        chrome.devtools.inspectedWindow.getResources(function(resources) {
+            var i = resources.length;
+            while (i--) {
+                var resource = resources[i];
+                if (resource.url === href && resource.type === 'stylesheet') {
+                    resource.getContent(function(content) {
+                        lastStylesheet = {
+                            content: content,
+                            url: resource.url
+                        };
+                    });
+                    break;
+                }
             }
-        }
+        });
     });
 }
 
