@@ -1,10 +1,11 @@
 <script>
 'use strict';
 
-var lastStylesheet = null;
-var addedCSS = '';
+var lastStylesheet = null,
+    addedCSS = '',
+    devtools = chrome.devtools.inspectedWindow ? chrome.devtools : chrome.experimental.devtools;
 
-chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
     var url = '';
     if (event.type === 'document') {
         if (lastStylesheet) {
@@ -47,12 +48,12 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
 
 function updateLastStylesheet() {
     lastStylesheet = null;
-    chrome.devtools.inspectedWindow.eval('(function() {\n\
+    devtools.inspectedWindow.eval('(function() {\n\
     var links = document.querySelectorAll("link[rel=stylesheet][href]");\n\
     var last = links && links.length && links[links.length - 1];\n\
     return last && last.href})()', function(href, fail) {
         if (fail) return;
-        chrome.devtools.inspectedWindow.getResources(function(resources) {
+        devtools.inspectedWindow.getResources(function(resources) {
             var i = resources.length;
             while (i--) {
                 var resource = resources[i];
