@@ -3,7 +3,9 @@
 
 var lastStylesheet = null,
     addedCSS = '',
-    devtools = chrome.devtools : chrome.experimental.devtools;
+    devtools = chrome.devtools || chrome.experimental.devtools;
+
+console.error()
 
 devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
     var url = '';
