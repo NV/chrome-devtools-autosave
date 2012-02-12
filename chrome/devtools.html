@@ -25,7 +25,7 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
         event.getContent(function(content) {
 
             if (event.type === 'stylesheet') {
-                if (event.url === lastStylesheet.url) {
+                if (lastStylesheet && event.url === lastStylesheet.url) {
                     lastStylesheet.content = content;
                 }
             } else if (event.type === 'document') {
