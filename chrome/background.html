@@ -75,7 +75,7 @@ function onRequest(request, sender, sendResponse) {
         xhr.onreadystatechange = function(event) {
             if (xhr.readyState == 4) {
                 if (xhr.status == 0) {
-                    webkitNotifications.createNotification('', '', request.url + ' does not responding').show();
+                    webkitNotifications.createNotification('', '', 'DevTools Autosave Server doesn’t run on ' + request.url).show();
                 } else if (xhr.status >= 300) {
                     webkitNotifications.createNotification('', '', xhr.responseText).show();
                 }
