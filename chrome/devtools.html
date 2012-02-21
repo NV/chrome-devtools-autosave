@@ -1,18 +1,17 @@
 <script>
 'use strict';
 
-var lastStylesheet = null;
+var lastStylesheetURL = '';
+var lastStylesheetContent = '';
 var addedCSS = '';
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
     var url = '';
     if (event.type === 'document') {
-        if (lastStylesheet) {
-            url = lastStylesheet.url;
-        } else {
-            console.error('No external stylesheets found');
-            return;
+        if (!lastStylesheetURL) {
+            throw new Error('Cannot save newly added CSS. No <link rel=stylesheet> found in the <head>.');
         }
+        url = lastStylesheetURL;
     } else {
         url = event.url;
     }
@@ -24,17 +23,25 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
         }
         event.getContent(function(content) {
 
-            if (event.type === 'stylesheet') {
-                if (lastStylesheet && event.url === lastStylesheet.url) {
-                    lastStylesheet.content = content;
+            if (lastStylesheetURL) {
+                if (event.type === 'stylesheet') {
+                    if (event.url === lastStylesheetURL) {
+                        lastStylesheetContent = content;
+                    }
+                    content += addedCSS;
+                } else if (event.type === 'document') {
+                    if (content) {
+                        addedCSS = '\n' + content + '\n';
+                    } else {
+                        addedCSS = '';
+                    }
+                    content = lastStylesheetContent + addedCSS;
                 }
-            } else if (event.type === 'document') {
-                addedCSS = content + '\n';
             }
 
             chrome.extension.sendRequest({
                 method: 'send',
-                content: (event.type === 'document' ? lastStylesheet.content : content) + addedCSS,
+                content: content,
                 url: backendURL,
                 headers: {
                     'X-URL': url,
@@ -46,10 +53,11 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
 });
 
 function updateLastStylesheet() {
-    lastStylesheet = null;
+    lastStylesheetURL = '';
+    lastStylesheetContent = '';
     chrome.experimental.devtools.inspectedWindow.eval('(function() {\n\
-    var links = document.querySelectorAll("link[rel=stylesheet][href]");\n\
-    var last = links && links.length && links[links.length - 1];\n\
+    var links = document.head.querySelectorAll("link[rel=stylesheet][href]");\n\
+    var last = links[links.length - 1];\n\
     return last && last.href})()', function(href, fail) {
         if (fail) return;
         chrome.experimental.devtools.inspectedWindow.getResources(function(resources) {
@@ -58,10 +66,8 @@ function updateLastStylesheet() {
                 var resource = resources[i];
                 if (resource.url === href && resource.type === 'stylesheet') {
                     resource.getContent(function(content) {
-                        lastStylesheet = {
-                            content: content,
-                            url: resource.url
-                        };
+                        lastStylesheetURL = resource.url;
+                        lastStylesheetContent = content;
                     });
                     break;
                 }
