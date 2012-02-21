@@ -159,11 +159,7 @@ window.onload = function() {
         });
     }
 
-    if (localStorage.routes) {
-        showRules(JSON.parse(localStorage.routes));
-    } else {
-        showRules(defaultRules);
-    }
+    showRules(JSON.parse(localStorage.routes));
 
     var rules = document.getElementById('rules');
 
