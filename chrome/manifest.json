@@ -1,11 +1,17 @@
 {
     "name": "DevTools autosave",
-    "version": "1.1",
+    "version": "1.1.3",
     "description": "Pushes changes in CSS and JS files to the server",
 
     "devtools_page": "devtools.html",
     "background_page": "background.html",
     "options_page": "options.html",
+
+    "icons": {
+        "16": "icon_16.png",
+        "48": "icon_48.png",
+        "128": "icon_128.png"
+    },
 
     "permissions": [
         "experimental",
