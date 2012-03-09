@@ -18,7 +18,7 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
 
     chrome.extension.sendRequest({method: 'getBackend', url: url, type: event.type}, function(backendURL) {
         if (!backendURL) {
-            console.error(url + ' does not correspond to any backend.');
+            console.error(url + ' doesn’t match any rules in the DevTools Autosave options.');
             return;
         }
         event.getContent(function(content) {
