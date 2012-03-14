@@ -28,7 +28,7 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
                         lastStylesheetContent = content;
                     }
                     content += addedCSS;
-                } else if (event.type === 'document') {
+                } else if (event.type === 'document' || event.type === 'font') {
                     if (content) {
                         addedCSS = '\n' + content + '\n';
                     } else {
