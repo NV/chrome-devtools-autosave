@@ -7,7 +7,6 @@ var addedCSS = '';
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
     var url = '';
-    console.log(event.type);
     if (event.type === 'document' || event.type === 'font') {
         if (!lastStylesheetURL) {
             throw new Error('Cannot save newly added CSS. No <link rel=stylesheet> found in the <head>.');
