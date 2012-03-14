@@ -26,7 +26,6 @@ function getRoutes() {
     if (!json) {
         return [];
     }
-
     return JSON.parse(json).filter(function(route) {
         return !route._disabled;
     }).map(function(route) {
