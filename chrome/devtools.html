@@ -45,10 +45,6 @@ var lastStylesheetURL = '';
 var addedCSS = '';
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
-    var url = '';
-    if (event.type === 'document' || event.type === 'font') {
-        if (!lastStylesheetURL) {
-            throw new Error('Cannot save newly added CSS. No <link rel=stylesheet> found in the <head>.');
     if (event.type === 'document') {
         if (lastStylesheetURL) {
             getBackend(lastStylesheetURL);
@@ -58,23 +54,6 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
     } else {
         getBackend(event.url);
     }
-    chrome.extension.sendRequest({method: 'getBackend', url: url, type: event.type}, function(backendURL) {
-        if (!backendURL) {
-            console.error(url + ' does not correspond to any backend.');
-            return;
-        }
-        event.getContent(function(content) {
-
-            if (lastStylesheetURL) {
-                if (event.type === 'stylesheet') {
-                    if (event.url === lastStylesheetURL) {
-                        lastStylesheetContent = content;
-                    }
-                    content += addedCSS;
-                } else if (event.type === 'document' || event.type === 'font') {
-                    if (content) {
-                        addedCSS = '\n' + content + '\n';
-=======
 
     function getBackend(url) {
         chrome.extension.sendRequest({method: 'getBackend', url: url, type: event.type}, function(backendURL) {
