@@ -22,7 +22,7 @@
         <div class=row>
             <h3>Post to</h3>
             <p>
-                <input name=to type=url class="input-text" placeholder="http://127.0.0.1:9104/save">
+                <input name=to type=url class="input-text" placeholder="http://127.0.0.1:9104">
             </p>
         </div>
         <div class="row row-checkboxes">
@@ -31,8 +31,8 @@
             <label><input name=document type=checkbox checked>newly added CSS rules</label>
             (<a href="https://github.com/NV/chrome-devtools-autosave/issues/2">?</a>)
             <span class="right-side">
-                <button class=toggle onclick="_onToggleRule(this); return false;">Disable</button>
-                <button class=delete onclick="_onDeleteRule(this); return false;">Remove</button>
+                <button type=button class=toggle onclick="_onToggleRule(this); return false;">Disable</button>
+                <button type=button class=delete onclick="_onDeleteRule(this); return false;">Remove</button>
             </span>
         </div>
     </fieldset>

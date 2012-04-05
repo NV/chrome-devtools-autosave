@@ -4,7 +4,7 @@
 var defaultRules = [
     {
         match: '^file://',
-        to: 'http://127.0.0.1:9104/save',
+        to: 'http://127.0.0.1:9104/',
         script: 'on',
         stylesheet: 'on',
         font: 'on',
@@ -13,10 +13,28 @@ var defaultRules = [
 ];
 
 if (!localStorage.routes) {
-    // First run
+    // First run after installation
     localStorage.routes = JSON.stringify(defaultRules);
+} else {
+    (function migrateRules() {
+        var routes = JSON.parse(localStorage.routes);
+        var endsWithSave = /\/save$/;
+        var i = routes.length;
+        var found = false;
+        while (i--) {
+            if (endsWithSave.test(routes[i].to)) {
+                found = true;
+                var updatedTo = routes[i].to.replace(endsWithSave, '');
+                console.warn('Replacing ' + routes[i].to + ' with ' + updatedTo);
+                routes[i].to = updatedTo;
+            }
+        }
+        if (found) {
+            localStorage.routes = JSON.stringify(routes);
+            console.warn('"/save" has been removed from the end of all server’s URLs. It’s not needed any more.');
+        }
+    })();
 }
-
 
 /**
  * @nosideeffects
@@ -58,6 +76,84 @@ function getBackend(request) {
 }
 
 /**
+ * @param {number} major
+ * @param {number} minor
+ * @nosideeffects
+ * @return {Object}
+ */
+function versionPair(major, minor) {
+    return {
+        major: parseInt(major),
+        minor: parseInt(minor),
+        toString: function() {
+            return this.major + '.' + this.minor;
+        }
+    }
+}
+
+var protocolVersion = versionPair(1, 0);
+
+/**
+ * @param {Object} request
+ */
+function sendToBackend(request) {
+    var xhrHandshake = new XMLHttpRequest();
+    xhrHandshake.open('GET', request.url, true);
+
+    function onError(event) {
+        var error;
+        if (event.target.status == 0) {
+            error = 'DevTools Autosave Server doesn’t run on ' + request.url;
+        } else if (event.target.status >= 300) {
+            error = event.target.responseText;
+        }
+        if (error) {
+            webkitNotifications.createNotification('', '', error).show();
+        }
+        return error;
+    }
+
+    xhrHandshake.onerror = onError;
+
+    xhrHandshake.onload = function(event) {
+        if (onError(event)) {
+            return;
+        }
+        var versionMatch = xhrHandshake.responseText.match(/DevTools Autosave (\d+)\.(\d+)/);
+        var serverVersion = versionPair(versionMatch[1], versionMatch[2]);
+        if (serverVersion.major !== protocolVersion.major) {
+            var error = 'Cannot save. ';
+            if (serverVersion.major < protocolVersion.major) {
+                error += 'Autosave Server ' + serverVersion + ' is out of date. Update it by running `sudo npm install -g autosave@' + protocolVersion + '` in the terminal.';
+            } else {
+                error += 'You’re using old version of DevTools Autosave (' + protocolVersion + ') that is incompatible with Autosave Server ' + serverVersion + '.';
+            }
+            webkitNotifications.createNotification('', '', error).show();
+            console.error(error);
+            return;
+        } else if (serverVersion.minor !== protocolVersion.minor) {
+            if (serverVersion.minor < protocolVersion.minor) {
+                console.info('Autosave Server is using slightly older version of Autosave protocol (' + serverVersion + ') than Chrome DevTools Autosave (' + protocolVersion + '). You might want to update the server by running `sudo npm install -g autosave@' + protocolVersion + '` in the terminal.');
+            } else {
+                console.info('Chrome DevTools Autosave is using slightly older version of Autosave protocol (' + protocolVersion  + ') than Autosave Server (' + serverVersion + '). You might want to update the extension.');
+            }
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', request.url, true);
+        xhr.setRequestHeader('x-autosave-version', protocolVersion.toString());
+        var headers = request.headers;
+        for (var key in headers) {
+            xhr.setRequestHeader(key, headers[key]);
+        }
+        xhr.onload = xhr.onerror = onError;
+        xhr.send(request.content);
+    };
+
+    xhrHandshake.send(null);
+}
+
+
+/**
  * @param {Object} request
  * @param {MessageSender} sender
  * @param {Function} sendResponse
@@ -66,23 +162,7 @@ function onRequest(request, sender, sendResponse) {
     if (request.method == 'getBackend') {
         sendResponse(getBackend(request));
     } else if (request.method == 'send') {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', request.url, true);
-
-        var headers = request.headers;
-        for (var key in headers) {
-            xhr.setRequestHeader(key, headers[key]);
-        }
-        xhr.onreadystatechange = function(event) {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 0) {
-                    webkitNotifications.createNotification('', '', 'DevTools Autosave Server doesn’t run on ' + request.url).show();
-                } else if (xhr.status >= 300) {
-                    webkitNotifications.createNotification('', '', xhr.responseText).show();
-                }
-            }
-        };
-        xhr.send(request.content);
+        sendToBackend(request);
     }
 }
 
