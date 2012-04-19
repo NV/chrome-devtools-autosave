@@ -147,12 +147,16 @@ window.onload = function() {
                     return;
                 }
                 var input = clone.querySelector('[name="' + name + '"]');
-                if (input.tagName == 'button') {
-                    input.textContent = rule[name];
-                } else if (input.type == 'checkbox') {
-                    input.checked = !!rule[name];
-                } else {
-                    input.value = rule[name];
+                if(input){
+                    if (input.tagName == 'button') {
+                        input.textContent = rule[name];
+                    } else if (input.type == 'checkbox') {
+                        input.checked = !!rule[name];
+                    } else {
+                        input.value = rule[name];
+                    }
+                }else{
+                    console.log('depreciated option not found.')
                 }
             });
             rulesElem.appendChild(clone);
