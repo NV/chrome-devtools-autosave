@@ -1,37 +1,45 @@
 <script>
 'use strict';
 
-var defaultRules = [
-    {
-        match: '^file://',
-        to: 'http://127.0.0.1:9104/',
-        script: 'on',
-        stylesheet: 'on',
-        document: 'on'
-    }
-];
+localStorage.ROUTE_SCHEMA = 'id,match,savePath';
+localStorage.SERVER_SCHEMA = 'id,url';
 
 if (!localStorage.routes) {
     // First run after installation
-    localStorage.routes = JSON.stringify(defaultRules);
-} else {
+    localStorage.routes = JSON.stringify([{
+        id: '0',
+        match: '^file://[^/]*/',
+        savePath: '/'
+    }]);
+    localStorage.servers = JSON.stringify([{
+        id: '0',
+        url: 'http://127.0.0.1:9104'
+    }]);
+} else if (!localStorage.servers) {
+    // First run after updating to version 1.x
     (function migrateRules() {
         var routes = JSON.parse(localStorage.routes);
         var endsWithSave = /\/save$/;
-        var i = routes.length;
-        var found = false;
-        while (i--) {
-            if (endsWithSave.test(routes[i].to)) {
-                found = true;
-                var updatedTo = routes[i].to.replace(endsWithSave, '');
-                console.warn('Replacing ' + routes[i].to + ' with ' + updatedTo);
-                routes[i].to = updatedTo;
+        var servers = [];
+        var serversSet = {};
+        var id = 0;
+        for (var i = 0, ii = routes.length; i < ii; i++) {
+            var route = routes[i];
+            var updatedTo = route.to.replace(endsWithSave, '');
+            if (serversSet.hasOwnProperty(updatedTo)) {
+                route.id = serversSet[updatedTo];
+            } else {
+                serversSet[updatedTo] = route.id = id.toString();
+                servers.push({url: updatedTo, id: id.toString()});
+                id++;
             }
+            delete route.stylesheet;
+            delete route.script;
+            delete route.document;
+            delete route.to;
         }
-        if (found) {
-            localStorage.routes = JSON.stringify(routes);
-            console.warn('"/save" has been removed from the end of all server’s URLs. It’s not needed any more.');
-        }
+        localStorage.servers = JSON.stringify(servers);
+        localStorage.routes = JSON.stringify(routes);
     })();
 }
 
@@ -44,34 +52,69 @@ function getRoutes() {
     if (!json) {
         return [];
     }
-
-    return JSON.parse(json).filter(function(route) {
-        return !route._disabled;
-    }).map(function(route) {
+    var requiredFields = localStorage.ROUTE_SCHEMA.split(',');
+    var routes = JSON.parse(json);
+    OUTER: for (var i = routes.length; i--;) {
+        var route = routes[i];
+        for (var j = requiredFields.length; j--;) {
+            if (!route[requiredFields[j]]) {
+                routes.splice(i, 1);
+                continue OUTER;
+            }
+        }
         route.match = new RegExp(route.match);
-        return route;
-    });
+    }
+    return routes;
+}
+
+/**
+ * @nosideeffects
+ * @return Array
+ */
+function getServers() {
+    return localStorage.servers ? JSON.parse(localStorage.servers) : [];
 }
 
 /**
  * @param {Object} request
  * @nosideeffects
- * @return string
+ * @return Object
  */
 function getBackend(request) {
     var routes = getRoutes();
     for (var i = 0; i < routes.length; i++) {
         var route = routes[i];
-        var matched;
-        if (route[request.type] && (matched = request.url.match(route.match))) {
-            var result = route.to;
-            for (var j = 0; j < matched.length; j++) {
-                result = result.replace(new RegExp('\\$' + j, 'g'), matched[j]);
+        if (!route.match.test(request.url)) {
+            continue;
+        }
+        var servers = getServers();
+        for (i = 0; i < servers.length; i++) {
+            if (servers[i].id === route.id) {
+                return {
+                    serverURL: servers[i].url,
+                    savePath: urlToPath(request.url.replace(route.match, route.savePath))
+                };
             }
-            return result;
         }
     }
-    return '';
+    return null;
+}
+
+/**
+ * @param {string} url
+ * @nosideeffects
+ * @return {string}
+ */
+function urlToPath(url) {
+    var queryIndex = url.indexOf('?');
+    if (queryIndex !== -1) {
+        url = url.slice(0, queryIndex);
+    }
+    if (/^\/[C-Z]:\//.test(url)) {
+        // Oh, Windows.
+        url = url.slice(1);
+    }
+    return decodeURIComponent(url);
 }
 
 /**
@@ -102,7 +145,7 @@ function sendToBackend(request) {
     function onError(event) {
         var error;
         if (event.target.status == 0) {
-            error = 'DevTools Autosave Server doesn’t run on ' + request.url;
+            error = 'Autosave Server doesn’t run on ' + request.url;
         } else if (event.target.status >= 300) {
             error = event.target.responseText;
         }
@@ -123,18 +166,18 @@ function sendToBackend(request) {
         if (serverVersion.major !== protocolVersion.major) {
             var error = 'Cannot save. ';
             if (serverVersion.major < protocolVersion.major) {
-                error += 'Autosave Server ' + serverVersion + ' is out of date. Update it by running `sudo npm install -g autosave@' + protocolVersion + '` in the terminal.';
+                error += 'Autosave Server ' + serverVersion + ' is out of date. Update it by running `npm install -g autosave@' + protocolVersion + '` in the terminal.';
             } else {
-                error += 'You’re using old version of DevTools Autosave (' + protocolVersion + ') that is incompatible with Autosave Server ' + serverVersion + '.';
+                error += 'You’re using old version of DevTools Autosave extension (' + protocolVersion + ') that is incompatible with Autosave Server ' + serverVersion + '.';
             }
             webkitNotifications.createNotification('', '', error).show();
             console.error(error);
             return;
         } else if (serverVersion.minor !== protocolVersion.minor) {
             if (serverVersion.minor < protocolVersion.minor) {
-                console.info('Autosave Server is using slightly older version of Autosave protocol (' + serverVersion + ') than Chrome DevTools Autosave (' + protocolVersion + '). You might want to update the server by running `sudo npm install -g autosave@' + protocolVersion + '` in the terminal.');
+                console.info('Autosave Server is using slightly older version of Autosave protocol (' + serverVersion + ') than Chrome DevTools Autosave (' + protocolVersion + '). You might want to update the server by running `npm install -g autosave@' + protocolVersion + '` in the terminal.');
             } else {
-                console.info('Chrome DevTools Autosave is using slightly older version of Autosave protocol (' + protocolVersion  + ') than Autosave Server (' + serverVersion + '). You might want to update the extension.');
+                console.info('DevTools Autosave extension is using slightly older version of Autosave protocol (' + protocolVersion  + ') than Autosave Server (' + serverVersion + '). You might want to update the extension.');
             }
         }
         var xhr = new XMLHttpRequest();

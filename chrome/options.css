@@ -1,92 +1,95 @@
-body {
-    background: #eaeef3;
+html {
+    background: #E4E3EB url(vertical-stripes.png);
+    color: #8972A2;
     font: 13px Helvetica, sans-serif;
+}
+body {
     min-width: 540px;
-    margin: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8px;
 }
-
-h1 {
-    color: #53637d;
-    font-size: 140%;
-    font-weight: normal;
-    margin: 0;
-    padding: 13px 0 14px;
+.layout {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+thead {
     text-align: center;
-    text-shadow: white 0 1px 1px;
+    font-weight: bold;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.8);
 }
-
+thead td {
+    padding: 1em 0;
+}
+tbody {
+    vertical-align: top;
+}
+td {
+    padding: 0;
+}
 h3 {
     font-size: 14px;
-    width: 80px;
-    text-align: right;
+    width: 4em;
     margin: 0;
-    padding: .3em 1em 0 0;
+    padding: 8px 1em 0 0;
+    text-align: right;
+    text-shadow: 0 1px  rgba(255, 255, 255, 0.8);
 }
-
+fieldset {
+    border: none;
+    box-shadow: 0px 1px 3px -1px rgba(35, 0, 124, .5);
+    margin: 0 auto 16px;
+    box-sizing: border-box;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 3px;
+}
 input {
     font-family: inherit;
 }
-
-button {
-    font-family: inherit;
+.input-text {
+    width: 99%;
     font-size: inherit;
-}
-
-input[type=checkbox] {
-    margin-right: .5em;
-}
-
-label + label {
-    margin-left: 1em;
-}
-
-fieldset {
     border: none;
+    background: transparent;
+    color: black;
+    padding: 8px 0 8px 4px;
+    margin: 0;
+    border-radius: 2px;
+    -webkit-transition: .1s background-color linear;
+}
+.input-text::-webkit-input-placeholder {
+    color: #BCC4D5;
+}
+.input-text:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+.input-text:focus {
+    background: #FFFFF5;
+    color: black;
 }
 
-.center {
-    padding-left: 4%;
-    margin: 0 auto;
+#routes {
+    min-width: 300px;
 }
-
-#rules {
-    border-top: 1px solid #D5DDE7;
-    border-bottom: 1px solid #FFF;
-}
-
-.rule {
-    box-sizing: border-box;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0 3%;
-    margin: 0 auto;
-    opacity: 1;
-    border-top: 1px solid #FFF;
-    border-bottom: 1px solid #D5DDE7;
-}
-.rule-animation {
-    -webkit-transition: height .1s ease-out, opacity .1s linear;
-}
-.rule-hidden {
-    height: 0 !important;
-    opacity: 0;
-}
-.rule-disabled {
-    color: #8F98A3;
-}
-
 .error {
     display: none;
 }
-
+.rule {
+    -webkit-transition: .5s opacity linear;
+}
 .row {
-    display:-webkit-box;
-    margin: .5em 0;
-    padding-right: 10px;
+    padding: 6px 8px;
+    background: #E4ECF8 url(stripes.png);
+    box-shadow: 0 1px rgba(255, 255, 249, 0.4) inset;
+    color: #7281A2;
+}
+.row + .row {
+    border-top: 1px solid  #E4E5F8;
 }
 .row-error {
     background-color: #FDD;
-    outline: 5px solid #FDD;
     color: #900;
 }
 .row-error .error {
@@ -97,29 +100,73 @@ fieldset {
     margin: 0;
     padding: 0;
 }
-.row-checkboxes {
-    padding-left: 92px;
+.row-error .input-text::-webkit-input-placeholder {
+    color: #CE9191;
+}
+#routes .row {
+    display: -webkit-box;
 }
 
-.input-text {
-    width: 99%;
-    font-size: inherit;
+.pipes-col {
+    width: 150px;
 }
-
-
-#add_row {
-    margin-top: 6px;
-    padding: 3px 10px;
-}
-
-#dummy_rule {
-    position: relative;
-    top: -999px;
-}
-
-.right-side {
+#pipes {
     display: block;
-    -webkit-box-flex: 1;
-    text-align: right;
-    margin-top: -3px;
+    width: 150px;
+    height: 100%;
+}
+.pipe {
+    -webkit-transition: opacity .1s linear;
+}
+.pipe-new {
+    opacity: 0;
+}
+.pipe-line {
+    stroke: #b1bcd0;
+    width: 1px;
+}
+.pipe-fat-line {
+    stroke: transparent;
+    stroke-width: 16;
+}
+.pipe-line-shadow {
+    stroke: #eaeaf0;
+    stroke-width: 3px;
+}
+.pipe-hovered .pipe-end-middle {
+    fill: #6969FF;
+}
+.pipe-hovered .pipe-line {
+    stroke: #6969FF;
+}
+.pipe-hovered .pipe-line-shadow {
+    stroke: #e0f7fe;
+}
+.draggable {
+    cursor: -webkit-grab;
+}
+.pipe-dragging .draggable {
+    cursor: -webkit-grabbing;
+}
+.pipe-dragging #servers .rule:not([id]) {
+    -webkit-transition-duration: .1s;
+    opacity: 0.5;
+}
+#dummy_pipe {
+    display: none;
+}
+
+#servers .row {
+    display: block;
+    border-radius: 5px;
+}
+.rule-nearest {
+    box-shadow: 0 0 1px 2px #6969FF;
+}
+.server-ok {
+    background-color: #D4F1C8;
+}
+
+.repeatable-invisible {
+    opacity: 0;
 }

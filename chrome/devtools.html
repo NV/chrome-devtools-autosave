@@ -45,6 +45,7 @@ var lastStylesheetURL = '';
 var addedCSS = '';
 
 chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+
     if (event.type === 'document') {
         if (lastStylesheetURL) {
             getBackend(lastStylesheetURL);
@@ -56,9 +57,9 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
     }
 
     function getBackend(url) {
-        chrome.extension.sendRequest({method: 'getBackend', url: url, type: event.type}, function(backendURL) {
+        chrome.extension.sendRequest({method: 'getBackend', url: url}, function(response) {
 
-            if (!backendURL) {
+            if (!response) {
                 console.error(url + ' doesn’t match any rules in the DevTools Autosave options.');
                 return;
             }
@@ -88,10 +89,11 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
                     chrome.extension.sendRequest({
                         method: 'send',
                         content: JSON.stringify(patch),
-                        url: backendURL,
+                        url: response.serverURL,
                         headers: {
                             'Content-Type': 'application/json',
                             'X-URL': url,
+                            'X-Path': response.savePath,
                             'X-Type': event.type
                         }
                     });
