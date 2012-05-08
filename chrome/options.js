@@ -202,7 +202,7 @@ window.onload = function() {
     identify(servers.dummy);
     servers.draw();
 
-    routes.element.oninput = routes.element.onchange = function(event) {
+    routes.element.addEventListener('input', function(event) {
         var element = event.target;
         var row = element.up('.row');
         if (element.name === 'match') {
@@ -222,11 +222,11 @@ window.onload = function() {
             }
         }
         routes.save();
-    };
+    }, false);
 
-    servers.element.oninput = servers.element.onchange = function() {
+    servers.element.addEventListener('input', function() {
         servers.save();
-    };
+    }, false);
 
     repeatable(routes.dummy, function(element) {
         createDisabledPipeFor(element);
