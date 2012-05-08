@@ -205,7 +205,7 @@ window.onload = function() {
     routes.element.oninput = routes.element.onchange = function(event) {
         var element = event.target;
         var row = element.up('.row');
-        if (element.NAME === 'match') {
+        if (element.name === 'match') {
             try {
                 new RegExp(element.value);
             } catch (error) {
