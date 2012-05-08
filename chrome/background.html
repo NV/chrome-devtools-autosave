@@ -168,16 +168,16 @@ function sendToBackend(request) {
             if (serverVersion.major < protocolVersion.major) {
                 error += 'Autosave Server ' + serverVersion + ' is out of date. Update it by running `npm install -g autosave@' + protocolVersion + '` in the terminal.';
             } else {
-                error += 'You’re using old version of DevTools Autosave extension (' + protocolVersion + ') that is incompatible with Autosave Server ' + serverVersion + '.';
+                error += 'You’re using an old version of DevTools Autosave extension (' + protocolVersion[0] + '.x) that is incompatible with Autosave Server ' + serverVersion + '.';
             }
             webkitNotifications.createNotification('', '', error).show();
             console.error(error);
             return;
         } else if (serverVersion.minor !== protocolVersion.minor) {
             if (serverVersion.minor < protocolVersion.minor) {
-                console.info('Autosave Server is using slightly older version of Autosave protocol (' + serverVersion + ') than Chrome DevTools Autosave (' + protocolVersion + '). You might want to update the server by running `npm install -g autosave@' + protocolVersion + '` in the terminal.');
+                console.info('Autosave Server is using a slightly older version of Autosave protocol (' + serverVersion + ') than Chrome DevTools Autosave (' + protocolVersion + '). You might want to update the server by running `npm install -g autosave@' + protocolVersion + '` in the terminal.');
             } else {
-                console.info('DevTools Autosave extension is using slightly older version of Autosave protocol (' + protocolVersion  + ') than Autosave Server (' + serverVersion + '). You might want to update the extension.');
+                console.info('DevTools Autosave extension is using a slightly older version of Autosave protocol (' + protocolVersion  + ') than Autosave Server (' + serverVersion + '). You might want to update the extension.');
             }
         }
         var xhr = new XMLHttpRequest();
