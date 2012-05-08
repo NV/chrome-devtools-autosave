@@ -1,4 +1,3 @@
-<script>
 'use strict';
 
 localStorage.ROUTE_SCHEMA = 'id,match,savePath';
@@ -211,4 +210,3 @@ function onRequest(request, sender, sendResponse) {
 
 chrome.extension.onRequest.addListener(onRequest);
 chrome.extension.onRequestExternal.addListener(onRequest);
-</script>

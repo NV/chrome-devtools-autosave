@@ -4,7 +4,9 @@
     "description": "Pushes changes in CSS and JS files to the server",
 
     "devtools_page": "devtools.html",
-    "background_page": "background.html",
+    "background": {
+        "scripts": ["background.js"]
+    },
     "options_page": "options.html",
 
     "icons": {
@@ -20,5 +22,6 @@
     ],
 
     "update_url": "http://userscripts.ru/js/chrome-devtools-autosave/update.xml",
-    "minimum_chrome_version": "15"
+    "manifest_version": 2,
+    "minimum_chrome_version": "17"
 }
