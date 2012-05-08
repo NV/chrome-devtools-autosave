@@ -288,7 +288,9 @@ window.onload = function() {
         return !isDragging && (element.hasClass('draggable'));
     }
 
-    byId('pipes').addEventListener('mouseover', function(event) {
+    var pipes = byId('pipes');
+
+    pipes.addEventListener('mouseover', function(event) {
         if (isDraggable(event.target)) {
             if (activePipe) {
                 activePipe.removeClass('pipe-hovered');
@@ -299,7 +301,7 @@ window.onload = function() {
     }, false);
 
 
-    byId('pipes').addEventListener('mouseout', function(event) {
+    pipes.addEventListener('mouseout', function(event) {
         if (isDraggable(event.target)) {
             if (activePipe) {
                 activePipe.removeClass('pipe-hovered');
@@ -313,7 +315,6 @@ window.onload = function() {
 
 
     var isDragging = false;
-    var pipes = byId('pipes');
     pipes.onmousedown = function(event) {
         if (event.button !== 0) {
             return;
@@ -392,9 +393,6 @@ window.onload = function() {
                 inputElement.value = '';
                 pipe.disableSmoothly();
             } else {
-                if (findClosest(middles, endGroup.y) !== prevI) {
-                    console.warn('ACHTUNG!');
-                }
                 inputElement.value = server.id.split('_')[1];
                 endGroup.x += 10;
                 connectRoutesToServer(routes.withId(inputElement.value),inputElement.value);
@@ -562,20 +560,6 @@ SVGElement.prototype.addClass = function(name) {
 };
 SVGElement.prototype.removeClass = function(name) {
     this.className.baseVal = (' ' + this.className.baseVal + ' ').replace(' ' + name + ' ', ' ').trim();
-};
-
-//<animate attributeName="width" to="100" dur="10s" />
-SVGElement.prototype.animate = function(attributeName, value, duration) {
-    var prev = document.querySelector('animate[attributeName="' + attributeName + '"]');
-    if (prev) {
-        prev.parentNode.removeChild(prev);
-    }
-    var element = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-    element.setAttribute('attributeName', attributeName);
-    element.setAttribute('to', value);
-    element.setAttribute('dur', duration);
-    element.setAttribute('fill', 'freeze');
-    this.appendChild(element);
 };
 
 function animate(onStep, duration) {

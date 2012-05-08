@@ -76,7 +76,7 @@ input {
 .error {
     display: none;
 }
-.rule {
+.rule, .pipe {
     -webkit-transition: .5s opacity linear;
 }
 .row {
@@ -114,9 +114,6 @@ input {
     display: block;
     width: 150px;
     height: 100%;
-}
-.pipe {
-    -webkit-transition: opacity .1s linear;
 }
 .pipe-new {
     opacity: 0;
