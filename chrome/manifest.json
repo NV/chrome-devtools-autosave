@@ -16,7 +16,6 @@
     },
 
     "permissions": [
-        "experimental",
         "notifications",
         "http://*/"
     ],

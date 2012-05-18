@@ -43,7 +43,7 @@ var resourceMap;
 var lastStylesheetURL = '';
 var addedCSS = '';
 
-chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
 
     if (event.type === 'document') {
         if (lastStylesheetURL) {
@@ -107,7 +107,7 @@ chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListe
  */
 function getLastStylesheetURL(onSuccess) {
     lastStylesheetURL = '';
-    chrome.experimental.devtools.inspectedWindow.eval('(function() {\n\
+    chrome.devtools.inspectedWindow.eval('(function() {\n\
     var links = document.head.querySelectorAll("link[rel=stylesheet][href]");\n\
     var last = links[links.length - 1];\n\
     return last && last.href})()', function(href, fail) {
@@ -137,18 +137,18 @@ function addResource(resource) {
     }
 }
 
-chrome.experimental.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
+chrome.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
 
 function getAllResources() {
     resourceMap = createResourceMap();
-    chrome.experimental.devtools.inspectedWindow.getResources(function(resources) {
+    chrome.devtools.inspectedWindow.getResources(function(resources) {
         resources.forEach(addResource);
     });
 }
 
 getAllResources();
 
-chrome.experimental.devtools.onReset.addListener(function() {
+chrome.devtools.onReset.addListener(function() {
     console.log('Reloaded');
     addedCSS = '';
     getAllResources();
