@@ -27,7 +27,7 @@ That’s it. Files have been saved.
 
 ## How Does It Work?
 
-Google Chrome has a [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
+Google Chrome has an [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
     chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
         event.url
