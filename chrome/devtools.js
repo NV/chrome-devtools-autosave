@@ -43,9 +43,18 @@ var resourceMap;
 var lastStylesheetURL = '';
 var addedCSS = '';
 
+/**
+ * @param {Object} event
+ * @nosideeffects
+ * @return {boolean}
+ */
+function isNewlyAdded(event) {
+	return event.url.indexOf('inspector://') == 0 || event.type === 'document';
+}
+
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
 
-    if (event.type === 'document') {
+    if (isNewlyAdded(event)) {
         if (lastStylesheetURL) {
             getBackend(lastStylesheetURL);
         } else {
@@ -72,7 +81,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
                 function sendToBackgroundPage() {
                     var patch;
-                    if (event.type === 'document') {
+                    if (isNewlyAdded(event)) {
                         var oldAddedCSS = addedCSS;
                         if (content) {
                             addedCSS = '\n' + content + '\n';
