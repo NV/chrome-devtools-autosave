@@ -157,7 +157,7 @@ function getAllResources() {
 
 getAllResources();
 
-chrome.devtools.onReset.addListener(function() {
+chrome.devtools.network.onNavigated.addListener(function() {
     console.log('Reloaded');
     addedCSS = '';
     getAllResources();
