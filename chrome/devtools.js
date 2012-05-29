@@ -66,7 +66,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
         chrome.extension.sendRequest({method: 'getBackend', url: url}, function(response) {
 
             if (!response) {
-                console.error(url + ' doesn’t match any rules in the DevTools Autosave options.');
+                console.error(url + ' doesn\'t match any rules in the DevTools Autosave options.');
                 return;
             }
 

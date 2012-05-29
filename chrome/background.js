@@ -144,7 +144,7 @@ function sendToBackend(request) {
     function onError(event) {
         var error;
         if (event.target.status == 0) {
-            error = 'Autosave Server doesn’t run on ' + request.url;
+            error = 'Autosave Server doesn\'t run on ' + request.url;
         } else if (event.target.status >= 300) {
             error = event.target.responseText;
         }
@@ -167,7 +167,7 @@ function sendToBackend(request) {
             if (serverVersion.major < protocolVersion.major) {
                 error += 'Autosave Server ' + serverVersion + ' is out of date. Update it by running `npm install -g autosave@' + protocolVersion + '` in the terminal.';
             } else {
-                error += 'You’re using an old version of DevTools Autosave extension (' + protocolVersion[0] + '.x) that is incompatible with Autosave Server ' + serverVersion + '.';
+                error += 'You\'re using an old version of DevTools Autosave extension (' + protocolVersion[0] + '.x) that is incompatible with Autosave Server ' + serverVersion + '.';
             }
             webkitNotifications.createNotification('', '', error).show();
             console.error(error);
