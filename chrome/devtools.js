@@ -49,7 +49,7 @@ var addedCSS = '';
  * @return {boolean}
  */
 function isNewlyAdded(event) {
-	return event.url.indexOf('inspector://') == 0 || event.type === 'document';
+    return event.url.indexOf('inspector://') == 0 || event.type === 'document';
 }
 
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
