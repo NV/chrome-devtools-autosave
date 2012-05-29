@@ -14,30 +14,28 @@ function loadDiffMatchPatch(onload) {
     document.head.appendChild(script);
 }
 
-/**
- * @return {Object}
- */
-function createResourceMap() {
-    var map = {};
-    function assertKey(key) {
+
+function ResourceMap() {
+    this._map = {};
+}
+ResourceMap.prototype = {
+    get: function(key) {
+        this.assertKey(key);
+        if (!this._map.hasOwnProperty(key)) {
+            throw new Error('resourceMap does not have ' + JSON.stringify(key) + ' key.');
+        }
+        return this._map[key];
+    },
+    set: function(key, value) {
+        this.assertKey(key);
+        this._map[key] = value;
+    },
+    assertKey: function(key) {
         if (!key) {
             throw new Error('key is ' + JSON.stringify(key));
         }
     }
-    return {
-        get: function(key) {
-            assertKey(key);
-            if (!map.hasOwnProperty(key)) {
-                throw new Error('resourceMap does not have "' + key + '" key.');
-            }
-            return map[key];
-        },
-        set: function(key, value) {
-            assertKey(key);
-            map[key] = value;
-        }
-    };
-}
+};
 
 var resourceMap;
 var lastStylesheetURL = '';
@@ -94,6 +92,11 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
                         resourceMap.set(url, content);
                     }
 
+                    if (arePatchesEmpty(patch)) {
+                        console.error('Patch for ' + JSON.stringify(url) + ' is empty.');
+                        return;
+                    }
+
                     chrome.extension.sendRequest({
                         method: 'send',
                         content: JSON.stringify(patch),
@@ -110,6 +113,20 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
         });
     }
 });
+
+/**
+ * @param {Array} patches
+ * @nosideeffects
+ * @return {Boolean}
+ */
+function arePatchesEmpty(patches) {
+    for (var i = 0, ii = patches.length; i < ii; i++) {
+        if (patches[i].diffs.length > 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 /**
  * @param {Function} onSuccess
@@ -146,16 +163,16 @@ function addResource(resource) {
     }
 }
 
-chrome.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
-
 function getAllResources() {
-    resourceMap = createResourceMap();
+    resourceMap = new ResourceMap();
     chrome.devtools.inspectedWindow.getResources(function(resources) {
         resources.forEach(addResource);
     });
 }
 
 getAllResources();
+
+chrome.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
 
 chrome.devtools.network.onNavigated.addListener(function() {
     console.log('Reloaded');
