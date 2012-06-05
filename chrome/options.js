@@ -75,7 +75,12 @@ Rules.prototype = {
 
             var clone = this.createItem();
             fill(clone, rule);
-            clone.setAttribute('id', this.NAME + '_' + rule.id);
+
+            // FIXME: it smells
+            if (this.NAME === 'servers') {
+                clone.setAttribute('id', this.NAME + '_' + rule.id);
+            }
+
             fragment.appendChild(clone);
 
             for (var j = emptyFields.length; j--;) {
