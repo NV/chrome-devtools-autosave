@@ -18,7 +18,7 @@
         <tbody>
             <tr>
                 <td class="routes-col">
-                    <form id=routes>
+                    <form id=routes autocomplete=off>
                         <fieldset class=rule id=routes_dummy>
                             <label class=row>
                                 <h3>Match</h3>
@@ -39,7 +39,6 @@
                 </td>
                 <td class="pipes-col">
                     <svg id="pipes" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <animate attributeName="x2" to="50" dur="200s" fill="freeze" attributeType="XML" id="animate_dummy"/>
                         <g id="pipes_dummy" class="pipe">
                             <line class="pipe-line-shadow" x1="1" x2="20" y1="43.5" y2="43.5"/>
                             <line class="pipe-line" x1="1" x2="20" y1="43.5" y2="43.5"/>
@@ -52,7 +51,7 @@
                     </svg>
                 </td>
                 <td class="servers-col">
-                    <form id=servers>
+                    <form id=servers autocomplete=off>
                         <fieldset class="rule" id=servers_dummy>
                             <label class=row>
                                 <input name=url type=url class="input-text" placeholder="e.g. http://127.0.0.1:9104/">
