@@ -5,10 +5,12 @@ var diffMatchPatch;
  * @param {Function} onload
  */
 function loadDiffMatchPatch(onload) {
+    console.info('Loading diff_match_patch.js');
     var script = document.createElement('script');
     script.src = 'diff_match_patch.js';
     script.onload = function() {
         diffMatchPatch = new diff_match_patch();
+        console.info('diff_match_patch.js loaded');
         onload();
     };
     document.head.appendChild(script);
@@ -80,6 +82,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
                 function sendToBackgroundPage() {
                     var patch;
                     if (isNewlyAdded(event)) {
+                        console.info('New CSS rules added. Appending them to', lastStylesheetURL);
                         var oldAddedCSS = addedCSS;
                         if (content) {
                             addedCSS = '\n' + content + '\n';
@@ -159,11 +162,13 @@ function addResource(resource) {
             resource.getContent(function(content) {
                 resourceMap.set(url, content);
             });
+            console.info(url, 'loaded');
             break;
     }
 }
 
 function getAllResources() {
+    console.info('Loading all scripts and stylesheets');
     resourceMap = new ResourceMap();
     chrome.devtools.inspectedWindow.getResources(function(resources) {
         resources.forEach(addResource);
@@ -175,7 +180,7 @@ getAllResources();
 chrome.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
 
 chrome.devtools.network.onNavigated.addListener(function() {
-    console.log('Reloaded');
+    console.info('A page reloaded');
     addedCSS = '';
     getAllResources();
 });
