@@ -456,7 +456,7 @@ function getDummy(id) {
 
 /**
  * @param {Array} array
- * @param {*} value
+ * @param {number} value
  * @return {number}
  */
 function findClosest(array, value) {
@@ -507,7 +507,6 @@ function fill(element, data) {
 
 /**
  * @param {string} selector
- * @nosideeffects
  * @return {Element|null}
  */
 Element.prototype.up = function(selector) {
