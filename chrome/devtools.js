@@ -182,5 +182,4 @@ chrome.devtools.inspectedWindow.onResourceAdded.addListener(addResource);
 chrome.devtools.network.onNavigated.addListener(function() {
     console.info('A page reloaded');
     addedCSS = '';
-    getAllResources();
 });
