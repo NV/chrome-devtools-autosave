@@ -4,7 +4,7 @@ html {
     font: 13px Helvetica, sans-serif;
 }
 body {
-    min-width: 540px;
+    min-width: 640px;
     max-width: 1100px;
     margin: 0 auto;
     padding: 8px;
@@ -148,9 +148,6 @@ input {
 .pipe-dragging #servers .rule:not([id]) {
     -webkit-transition-duration: .1s;
     opacity: 0.5;
-}
-#dummy_pipe {
-    display: none;
 }
 
 #servers .row {
