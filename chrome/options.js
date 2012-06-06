@@ -444,8 +444,7 @@ function repeatable(item, onNewItem) {
  * @return {Element}
  */
 function byId(id) {
-    var element = document.getElementById(id);
-    return element || null;
+    return document.getElementById(id);
 }
 
 function getDummy(id) {

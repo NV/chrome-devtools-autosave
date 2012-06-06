@@ -46,7 +46,6 @@ var addedCSS = '';
 
 /**
  * @param {Object} event
- * @nosideeffects
  * @return {boolean}
  */
 function isNewlyAdded(event) {
