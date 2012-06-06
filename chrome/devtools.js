@@ -10,6 +10,7 @@ function loadDiffMatchPatch(onload) {
     script.src = 'diff_match_patch.js';
     script.onload = function() {
         diffMatchPatch = new diff_match_patch();
+        diffMatchPatch.Patch_Margin = 16;
         console.info('diff_match_patch.js loaded');
         onload();
     };
