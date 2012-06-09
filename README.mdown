@@ -10,7 +10,7 @@ Chrome DevTools Autosave consists of a Chrome extension and a server. The extens
 
 ### Install [the Extension](https://chrome.google.com/webstore/detail/mlejngncgiocofkcbnnpaieapabmanfl)
 
-### [Install the Server](https://github.com/NV/chrome-devtools-autosave-server/blob/master/README.mdown)
+### Install [the Server](https://github.com/NV/chrome-devtools-autosave-server/blob/master/README.mdown)
 
 ## How to Use
 
@@ -35,17 +35,15 @@ Google Chrome has an [onResourceContentCommitted event](http://code.google.com/c
 
 Nice, isn’t it?
 
-Chrome DevTools Autosave sends the new content of the edited file to the server using POST method. There are couple custom headers:  
-`X-URL`: URL of edited CSS or JavaScript  
-`X-Type`: 'script', 'stylesheet' or 'document' (happens when you add new CSS rule)
-
-The server finds file location by its URL. Out of the box it works only with `file://` scheme, i.e. `file:///tmp/index.html` → `/tmp/index.html`.
+More on [Autosave protocol](https://github.com/NV/chrome-devtools-autosave/wiki/Protocol).
 
 ### FAQ
 
 > I’m developing on `http://localhost/` (or `http://you-name-it/`) instead of `file://`. Can I make Autosave work?
 
-Sure, just add a new route to extensions’ options.
+Sure, just add a new route to the extension’s options.
+
+![Autosave Options](https://lh6.googleusercontent.com/DA5oo80MQuRWLSim_0WmJfoMf060ZtkC1ITt4-cnesq3lMKO00bdL6yG1xUN548f82WeRn8WHw=s640-h400-e365)
 
 ## Similar Stuff
 
