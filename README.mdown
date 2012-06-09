@@ -8,11 +8,7 @@ Chrome DevTools let you edit CSS and JavaScript. It even allows you to [save it]
 
 Chrome DevTools Autosave consists of a Chrome extension and a server. The extension pushes changed files to the server. The server resolves URL of these files and overwrites the old ones with the new ones.
 
-### Install the Extension
-
-Open chrome://flags/ and enable Experimental Extension APIs  
-Restart the browser  
-Install [Chrome DevTools Autosave](http://userscripts.ru/js/chrome-devtools-autosave/latest.crx)
+### Install [the Extension](https://chrome.google.com/webstore/detail/mlejngncgiocofkcbnnpaieapabmanfl)
 
 ### [Install the Server](https://github.com/NV/chrome-devtools-autosave-server/blob/master/README.mdown)
 
@@ -49,7 +45,7 @@ The server finds file location by its URL. Out of the box it works only with `fi
 
 > I’m developing on `http://localhost/` (or `http://you-name-it/`) instead of `file://`. Can I make Autosave work?
 
-[Yes, you can!](https://github.com/NV/chrome-devtools-autosave/issues/7#issuecomment-3182946)
+Sure, just add a new route to extensions’ options.
 
 ## Similar Stuff
 
