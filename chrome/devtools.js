@@ -52,7 +52,7 @@ function isNewlyAdded(event) {
     return event.url.indexOf('inspector://') == 0 || event.type === 'document';
 }
 
-chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
+chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event, content) {
 
     if (isNewlyAdded(event)) {
         if (lastStylesheetURL) {
@@ -72,47 +72,45 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
                 return;
             }
 
-            event.getContent(function(content) {
-                if (diffMatchPatch) {
-                    sendToBackgroundPage();
-                } else {
-                    loadDiffMatchPatch(sendToBackgroundPage);
-                }
+            if (diffMatchPatch) {
+                sendToBackgroundPage();
+            } else {
+                loadDiffMatchPatch(sendToBackgroundPage);
+            }
 
-                function sendToBackgroundPage() {
-                    var patch;
-                    if (isNewlyAdded(event)) {
-                        console.info('New CSS rules added. Appending them to', lastStylesheetURL);
-                        var oldAddedCSS = addedCSS;
-                        if (content) {
-                            addedCSS = '\n' + content + '\n';
-                        } else {
-                            addedCSS = '';
-                        }
-                        patch = diffMatchPatch.patch_make(resourceMap.get(lastStylesheetURL) + oldAddedCSS, resourceMap.get(lastStylesheetURL) + addedCSS);
+            function sendToBackgroundPage() {
+                var patch;
+                if (isNewlyAdded(event)) {
+                    console.info('New CSS rules added. Appending them to', lastStylesheetURL);
+                    var oldAddedCSS = addedCSS;
+                    if (content) {
+                        addedCSS = '\n' + content + '\n';
                     } else {
-                        patch = diffMatchPatch.patch_make(resourceMap.get(url), content);
-                        resourceMap.set(url, content);
+                        addedCSS = '';
                     }
-
-                    if (arePatchesEmpty(patch)) {
-                        console.error('Patch for ' + JSON.stringify(url) + ' is empty.');
-                        return;
-                    }
-
-                    chrome.extension.sendRequest({
-                        method: 'send',
-                        content: JSON.stringify(patch),
-                        url: response.serverURL,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-URL': url,
-                            'X-Path': response.savePath,
-                            'X-Type': event.type
-                        }
-                    });
+                    patch = diffMatchPatch.patch_make(resourceMap.get(lastStylesheetURL) + oldAddedCSS, resourceMap.get(lastStylesheetURL) + addedCSS);
+                } else {
+                    patch = diffMatchPatch.patch_make(resourceMap.get(url), content);
+                    resourceMap.set(url, content);
                 }
-            });
+
+                if (arePatchesEmpty(patch)) {
+                    console.error('Patch for ' + JSON.stringify(url) + ' is empty.');
+                    return;
+                }
+
+                chrome.extension.sendRequest({
+                    method: 'send',
+                    content: JSON.stringify(patch),
+                    url: response.serverURL,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-URL': url,
+                        'X-Path': response.savePath,
+                        'X-Type': event.type
+                    }
+                });
+            }
         });
     }
 });
