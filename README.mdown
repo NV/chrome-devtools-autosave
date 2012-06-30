@@ -25,12 +25,10 @@ That’s it. Files have been saved.
 
 Google Chrome has an [onResourceContentCommitted event](http://code.google.com/chrome/extensions/dev/experimental.devtools.inspectedWindow.html#event-onResourceContentCommitted) that fires when you edit CSS and JavaScript.
 
-    chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event) {
-        event.url
-        event.type // 'script', 'stylesheet' or 'document' (happens when you add new CSS rule)
-        event.getContent(function(content) {
-            content // all the content of updated file as a string
-        })
+    chrome.experimental.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(resource, content) {
+        resource.url
+        resource.type // 'script', 'stylesheet' or 'document' (happens when you edit inline JS or CSS)
+        content // all the content of updated file as a string
     })
 
 Nice, isn’t it?
