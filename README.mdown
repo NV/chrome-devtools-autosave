@@ -1,8 +1,8 @@
 # Chrome DevTools Autosave
 
-**[20 seconds Screencast](http://www.youtube.com/watch?v=M4rme6EUvwQ)** · **[5 minutes intro by Addy Osmani](http://addyosmani.com/blog/autosave-changes-chrome-dev-tools/)**
+**[DevTools Autosave on Google I/O 2012](http://www.youtube.com/watch?v=3pxf3Ju2row&hd=1&t=18m24s)** · **[Intro to DevTools Autosave version 0.x (a bit outdated)](http://addyosmani.com/blog/autosave-changes-chrome-dev-tools/)**
 
-Chrome DevTools let you edit CSS and JavaScript. It even allows you to [save it](http://youtu.be/N8SS-rUEZPg?t=7m13s). You know it, right? I think, it’s annoying to "Save as..." every time you want to save. Chrome DevTools Autosave saves the files after every change for you!
+Chrome DevTools let you edit CSS and JavaScript. It even allows you to save it. I think, it’s annoying to choose a folder you want to save to for every file. DevTools Autosave saves the files on every change for you!
 
 ## How to Install
 
