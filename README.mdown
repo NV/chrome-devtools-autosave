@@ -45,4 +45,5 @@ Sure, just add a new route to the extension’s options.
 
 ## Similar Stuff
 
-[CSS-X-Fire](http://code.google.com/p/css-x-fire/) is a similar tool for Firebug and [IntelliJ IDEA](http://www.jetbrains.com/idea/)
+**[Tincr](http://tin.cr/)** — same as Autosave but doesn’t require you to install the server and does both ways syncing!  
+**[Live Edit plug-in for IntelliJ IDEA](http://plugins.intellij.net/plugin/?idea&id=7007)**
