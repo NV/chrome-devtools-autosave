@@ -46,4 +46,4 @@ Sure, just add a new route to the extension’s options.
 ## Similar Stuff
 
 **[Tincr](http://tin.cr/)** — same as Autosave but doesn’t require you to install the server and does both ways syncing!  
-**[Live Edit plug-in for IntelliJ IDEA](http://plugins.intellij.net/plugin/?idea&id=7007)**
+**[Live Edit plug-in for IntelliJ IDEA](http://blog.jetbrains.com/webide/2012/08/liveedit-plugin-features-in-detail/)**
