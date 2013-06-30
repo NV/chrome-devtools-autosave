@@ -43,7 +43,17 @@ Sure, just add a new route to the extension’s options.
 
 ![Autosave Options](https://lh6.googleusercontent.com/DA5oo80MQuRWLSim_0WmJfoMf060ZtkC1ITt4-cnesq3lMKO00bdL6yG1xUN548f82WeRn8WHw=s640-h400-e365)
 
-## Similar Stuff
+## Alternatives
 
-**[Tincr](http://tin.cr/)** — same as Autosave but doesn’t require you to install the server and does both ways syncing!  
-**[Live Edit plug-in for IntelliJ IDEA](http://blog.jetbrains.com/webide/2012/08/liveedit-plugin-features-in-detail/)**
+All the alternative listed below miss one Autosave’s feature: saving newly added CSS rules to the last stylesheet file.
+
+### Workspaces
+
+![chrome-devtools-workspaces](https://f.cloud.github.com/assets/55838/727738/6e76debc-e1b9-11e2-8ae9-716b21090a7c.png)
+
+Latest Chrome DevTools support [Workspaces](https://plus.google.com/+GoogleChromeDevelopers/posts/644qQuBKZeL) which makes Chrome DevTools Autosave obsolete.
+
+### [Tincr](http://tin.cr/)
+The same as Autosave but doesn’t require you to install the server and does both ways syncing!
+
+### [JetBrains IDE Chrome extension](https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji)
