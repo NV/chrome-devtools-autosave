@@ -164,3 +164,9 @@ input {
 .repeatable-invisible {
     opacity: 0;
 }
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+    html {
+        background-size: 6px;
+    }
+}
