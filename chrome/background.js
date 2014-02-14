@@ -80,23 +80,26 @@ function getServers() {
  * @return Object
  */
 function getBackend(request) {
-    var routes = getRoutes();
+    var matches = [],
+        routes = getRoutes();
+
     for (var i = 0; i < routes.length; i++) {
         var route = routes[i];
         if (!route.match.test(request.url)) {
             continue;
         }
         var servers = getServers();
-        for (i = 0; i < servers.length; i++) {
-            if (servers[i].id === route.id) {
-                return {
-                    serverURL: servers[i].url,
+        for (var j = 0; j < servers.length; j++) {
+            if (servers[j].id === route.id) {
+                matches.push({
+                    serverURL: servers[j].url,
                     savePath: urlToPath(request.url.replace(route.match, route.savePath))
-                };
+                });
             }
         }
     }
-    return null;
+
+    return (matches.length === 0 ? null : {matches: matches});
 }
 
 /**
