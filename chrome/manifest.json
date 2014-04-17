@@ -1,6 +1,6 @@
 {
     "name": "DevTools Autosave",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Saves changes in CSS and JS that was made via Chrome DevTools",
 
     "devtools_page": "devtools.html",

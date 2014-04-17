@@ -518,7 +518,7 @@ Element.prototype.up = function(selector) {
     return null;
 };
 
-NodeList.prototype.forEach = Array.prototype.forEach;
+NodeList.prototype.forEach = HTMLCollection.prototype.forEach = Array.prototype.forEach;
 NodeList.prototype.setAttribute = function(name, value) {
     for (var i = this.length; i--;) {
         this[i].setAttribute(name, value);
