@@ -56,4 +56,8 @@ Latest Chrome DevTools support [Workspaces](https://plus.google.com/+GoogleChrom
 ### [Tincr](http://tin.cr/)
 The same as Autosave but doesn’t require you to install the server and does both ways syncing!
 
+### [fb-flo](https://github.com/facebook/fb-flo)
+Two-way sync, requires to install Node and write JS config files.
+
 ### [JetBrains IDE Chrome extension](https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji)
+Works only with JetBrains IDEs, such as WebStorm.
