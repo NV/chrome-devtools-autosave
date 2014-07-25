@@ -80,6 +80,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
             function sendToBackgroundPage() {
                 var patch;
+
                 if (isNewlyAdded(event)) {
                     console.info('New CSS rules added. Appending them to', lastStylesheetURL);
                     var oldAddedCSS = addedCSS;
@@ -99,17 +100,25 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
                     return;
                 }
 
-                chrome.extension.sendRequest({
-                    method: 'send',
-                    content: JSON.stringify(patch),
-                    url: response.serverURL,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-URL': url,
-                        'X-Path': response.savePath,
-                        'X-Type': event.type
-                    }
-                });
+                if(!response.matches) {
+                    response.matches = [];
+                    response.matches.push(response);
+                }
+
+                for (var i=0; i<response.matches.length; i++) {
+                    var match = response.matches[i];
+                    chrome.extension.sendRequest({
+                        method: 'send',
+                        content: JSON.stringify(patch),
+                        url: match.serverURL,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-URL': url,
+                            'X-Path': match.savePath,
+                            'X-Type': event.type
+                        }
+                    });
+                }
             }
         });
     }

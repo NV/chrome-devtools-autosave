@@ -4,9 +4,11 @@
     "description": "Saves changes in CSS and JS that was made via Chrome DevTools",
 
     "devtools_page": "devtools.html",
+
     "background": {
         "scripts": ["background.js"]
     },
+
     "options_page": "options.html",
 
     "icons": {
