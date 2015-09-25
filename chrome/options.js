@@ -527,6 +527,10 @@ NodeList.prototype.setAttribute = function(name, value) {
 
 Object.defineProperty(SVGGElement.prototype, 'x', {
     get: function() {
+        if (!this.dataset) {
+            this.dataset = {};
+        }
+
         if (typeof this.dataset.x === 'undefined') {
             var matched = this.getAttribute('transform').match(/translate\(([\d.]+),[\d.]+\)/);
             this.dataset.x = matched ? matched[1] : 0;
@@ -534,6 +538,10 @@ Object.defineProperty(SVGGElement.prototype, 'x', {
         return parseInt(this.dataset.x);
     },
     set: function(x) {
+        if (!this.dataset) {
+            this.dataset = {};
+        }
+
         this.dataset.x = x;
         this.setAttribute('transform', 'translate(' + x + ',' + this.y + ')');
     }
@@ -541,6 +549,10 @@ Object.defineProperty(SVGGElement.prototype, 'x', {
 
 Object.defineProperty(SVGGElement.prototype, 'y', {
     get: function() {
+        if (!this.dataset) {
+            this.dataset = {};
+        }
+
         if (typeof this.dataset.y === 'undefined') {
             var matched = this.getAttribute('transform').match(/translate\([\d.]+,([\d.]+)\)/);
             this.dataset.y = matched ? matched[1] : 0;
@@ -548,6 +560,10 @@ Object.defineProperty(SVGGElement.prototype, 'y', {
         return parseInt(this.dataset.y);
     },
     set: function(y) {
+        if (!this.dataset) {
+            this.dataset = {};
+        }
+
         this.dataset.y = y;
         this.setAttribute('transform', 'translate(' + this.x + ',' + y + ')');
     }

@@ -1,7 +1,7 @@
 html {
     background: #E4E3EB url(vertical-stripes.png);
     color: #8972A2;
-    font: 13px Helvetica, sans-serif;
+    font-family: Helvetica, sans-serif;
 }
 body {
     min-width: 640px;
